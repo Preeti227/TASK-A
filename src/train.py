@@ -7,7 +7,7 @@ from src.dataset import load_filtered_dataset
 import numpy as np
 
 if __name__ == "__main__":
-    dataset_root = "/content/drive/MyDrive/Task_A"
+    dataset_root = "C:\Users\parth\Downloads\TASK A\Task_A"
 
     X_train, y_train, X_val, y_val = load_filtered_dataset(dataset_root)
 

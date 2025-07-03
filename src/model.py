@@ -4,7 +4,7 @@ from tensorflow.keras.layers import (
     MaxPooling2D, AveragePooling2D, Flatten,
     Dense, Dropout
 )
-from src.cbam import cbam_block  # Adjust the import based on your folder structure
+from src.cbam import cbam_block 
 
 def build_cnn_model(dropout_rate=0.3, input_shape=(224, 224, 4)):
     input_tensor = Input(shape=input_shape)
