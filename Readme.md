@@ -47,16 +47,16 @@
 
 ## Evaluation Metrics
 
-- ✅ Accuracy
-- 🎯 Precision
-- 🔁 Recall
-- 🧮 F1-Score
-- 📊 ROC AUC
-- 📉 ROC Curve Visualization
+- Accuracy
+- Precision
+- Recall
+- F1-Score
+- ROC AUC
+- ROC Curve Visualization
 
 ---
 
-## 🔍 Inference Mode
+## Inference Mode
 
 ```bash
 > Enter path to distorted test image: /path/to/distorted_image.jpg
