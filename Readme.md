@@ -1,16 +1,16 @@
 
 ---
 
-## 🏗️ Model Architecture
+##  Model Architecture
 
-### 🧩 Siamese Network
+### Siamese Network
 
 - **Inputs**: Pair of images — one reference, one distorted.
 - **Backbone**: Shared embedding network applied to both images.
 - **Comparison**: Embeddings are compared using L1 distance.
 - **Output**: Binary classification (`Same` vs `Different`).
 
-### 🔁 Ensemble Embedding Streams
+### Ensemble Embedding Streams
 
 1. **Custom CNN Stream**:
    - Conv2D(64, 10x10) → MaxPooling  
@@ -24,19 +24,19 @@
 3. **Shallow FaceNet-style Stream**:
    - Conv2D(32, 3x3) → GlobalAvgPooling → Dense(128)
 
-### 🔗 Final Embedding
+### Final Embedding
 
 - Concatenation of all 3 embeddings  
 - Dense(256) to unify representation  
 
-### 🔍 Siamese Head
+### Siamese Head
 
 - L1 Distance → Dense(1, Sigmoid)  
 - Predicts similarity score between 0 and 1
 
 ---
 
-## 🧪 Training Details
+## Training Details
 
 - **Input Size**: 160×160×1 (grayscale)
 - **Loss Function**: Binary Crossentropy
@@ -45,7 +45,7 @@
 
 ---
 
-## 📈 Evaluation Metrics
+## Evaluation Metrics
 
 - ✅ Accuracy
 - 🎯 Precision
