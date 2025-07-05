@@ -15,6 +15,13 @@
 
 ## Steps to Run the Code
 
+### Install Requirements
+
+```bash
+pip install -r requirements.txt
+
+```
+
 ### 1. Batch evaluation
 
 Run this to compare every distorted image to reference identities:
@@ -100,6 +107,8 @@ Task B/
 ├── requirements.txt
 ├── README.md
 ```
+
+---
 
 ## Contact
 
