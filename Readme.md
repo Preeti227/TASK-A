@@ -1,115 +1,61 @@
-# Task B: Face Matching (Multi-Class Recognition with Distorted Inputs)
+## 🚀 How to Run the Model
 
----
-
-## Scripts
-
-| Task                                           | Script                    | Purpose                                                                    |
-| ---------------------------------------------- | ------------------------- | -------------------------------------------------------------------------- |
-| **Manual Identity Verification (Single Pair)** | `app/manual_test.py`      | Compare one distorted image to one reference face                          |
-| **Batch Evaluation**                           | `app/batch_eval.py`       | Match every distorted image to reference identities                        |
-| **Single Image Comparison**                    | `app/interactive_test.py` | Check a single test image which is already present in train/val(reference) |
-| **Visualize Positive/Negative Pairs**          | `app/show_pairs.py`       | View matched/contrasting image pairs from reference set                    |
-
----
-
-## Steps to Run the Code
-
-### Install Requirements
+To run the gender prediction system, follow these steps:
 
 ```bash
+# Step 1: Create and activate a virtual environment
+python -m venv venv
+venv\Scripts\activate        # On Windows
+# source venv/bin/activate   # On Mac/Linux
+
+# Step 2: Install required dependencies
 pip install -r requirements.txt
 
+# Step 3: Run the main interface
+python main.py
 ```
+Once main.py starts, you'll see a menu in the terminal:
+🧠 Gender Prediction Project
+1. Train model
+2. Predict single image
+3. Predict batch folder
+4. Exit
 
-### 1. Batch evaluation
+## 🧱 Model Architecture
 
-Run this to compare every distorted image to reference identities:
+The gender prediction model is built using a transfer learning approach with **MobileNetV2** as the feature extractor. MobileNetV2 is a lightweight convolutional neural network optimized for speed and efficiency, making it ideal for real-time and embedded applications.
 
-```bash
-python app/batch_eval.py
-```
+The architecture is composed of the following layers:
 
-### 2. Manual Identity Verification (Single Pair)
+1. **Input Layer**: Accepts RGB images of shape `(224, 224, 3)`, which are preprocessed using MobileNetV2's `preprocess_input()` function.
 
-Run this to compare one distorted image against a clean reference:
+2. **MobileNetV2 Base**: A pretrained MobileNetV2 model is used with `include_top=False` to remove the original classification head. This base model outputs deep spatial features from the input images while keeping the number of parameters low.
 
-```bash
-python app/manual_test.py
-```
+3. **Global Average Pooling (GAP)**: This layer reduces the spatial dimensions of the feature map from the MobileNetV2 output by computing the average value for each feature map. It replaces dense layers to reduce overfitting and model size.
 
-### 3. Single Image Comparison
+4. **Dropout Layer**: A `Dropout(rate=0.3)` is added to prevent overfitting by randomly turning off 30% of the neurons during each training step.
 
-Run this to check a single test image which is already present in train/val (reference):
+5. **Dense Output Layer**: A fully connected `Dense(2)` layer with `softmax` activation is used to output class probabilities for the two categories: `Male` and `Female`.
 
-```bash
-python app/interactive_test.py
-```
+### 🔧 Summary
 
-### 4. Show negative and positive pairs
+- **Backbone**: MobileNetV2 (pretrained on ImageNet)
+- **Head Layers**: GAP → Dropout(0.3) → Dense(2, softmax)
+- **Loss Function**: Categorical Crossentropy
+- **Optimizer**: Adam
+- **Input Size**: 224x224x3
 
-Run this to display positive and negative pairs from the reference gallery:
+### 📊 Model Flow
 
-```bash
-python app/show_pairs.py
-```
+Input Image (224x224x3)
+↓
+MobileNetV2 (include_top=False)
+↓
+GlobalAveragePooling2D
+↓
+Dropout (rate=0.3)
+↓
+Dense (units=2, activation='softmax')
 
----
 
-## Model Architecture
-
-This project tackles identity recognition from visually distorted face images (e.g., blur, fog, rain, sunlight) using a deep learning pipeline based on ArcFace embeddings (from InsightFace). The architecture includes the following components:
-
-### 1. Backbone: ArcFace (InsightFace - Buffalo_L)
-
-- A robust face recognition model using ResNet50 backbone trained on a large-scale dataset.
-- Provides discriminative 512-D facial embeddings.
-- Pretrained ONNX models used via `insightface` library.
-
-### 2. Denoising Preprocessing Module
-
-- Distorted input images are optionally preprocessed using classical computer vision filters (Gaussian, Median, etc.) to reduce noise or enhance features before passing to the model.
-
-### 3. Matching Pipeline
-
-- Cosine similarity is used between embeddings of test (possibly distorted) and reference (clean) images.
-- A user-defined threshold (default = 0.5) determines if the images belong to the same person.
-
-### 4. Batch Evaluation & Visualization
-
-- Batch evaluation over all distortions per identity.
-- Metrics: Top-1 Accuracy, Macro F1 Score.
-- Visualization tools to display matched/unmatched pairs for analysis.
-
----
-
-## Directory Structure
-
-```
-Task B/
-├── app/
-│   ├── manual_test.py           # Manual CLI for image pair testing
-│   ├── batch_eval.py            # Batch evaluation script
-│   ├── interactive_test.py      # Single image comparison script
-│   ├── show_pairs.py            # Shows positive/negative pairs
-│
-├── utils/
-│   ├── embedding.py             # ArcFace embedding wrapper
-│   ├── preprocessing.py         # Denoising and preprocessing
-│   ├── matching.py              # Batch matching logic
-│   ├── manual_verification.py   # verify_identity_pair function
-│   ├── visualization.py         # Pair visualizer
-│
-├── data/
-│   ├── val/                     # Clean reference images
-│   ├── test/                    # Distorted test images
-│
-├── requirements.txt
-├── README.md
-```
-
----
-
-## Contact
-
-For any questions or issues, feel free to open an issue or reach out directly.
+This architecture provides a balance between performance and efficiency, achieving high accuracy while remaining lightweight and fast enough for deployment in real-time systems.
